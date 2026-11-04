@@ -1,0 +1,147 @@
+{
+ "provider": "Finlens (finlens.vn) — dữ liệu chart TradingView/UDF, tài khoản của người dùng",
+ "fetched": "2026-11-04",
+ "note": "Giá chỉ số ngành do Finlens tính; chưa xác minh có cộng cổ tức hay không. Ngày 04/11/2026 (phiên đang chạy khi tải) đã bị loại.",
+ "calendar": "Lịch giao dịch VNINDEX; ngành thiếu phiên để trống, không điền giá giả",
+ "prices_sha256": "550a04d3a9f21e757ed999d23bd4d26c991005edd5b81bd17ac0ac02ec06b1ce",
+ "sources": {
+  "ICB_0500": {
+   "name": "Dau khi",
+   "first": "2006-12-05",
+   "last": "2026-11-03",
+   "rows": 4960,
+   "first_eligible": "2007-09-27"
+  },
+  "ICB_1300": {
+   "name": "Hoa chat",
+   "first": "2006-12-26",
+   "last": "2026-11-03",
+   "rows": 4945,
+   "first_eligible": "2007-10-18"
+  },
+  "ICB_1700": {
+   "name": "Tai nguyen co ban",
+   "first": "2003-08-27",
+   "last": "2026-11-03",
+   "rows": 5781,
+   "first_eligible": "2004-06-18"
+  },
+  "ICB_2300": {
+   "name": "Xay dung va Vat lieu",
+   "first": "2003-08-27",
+   "last": "2026-11-03",
+   "rows": 5781,
+   "first_eligible": "2004-06-18"
+  },
+  "ICB_2700": {
+   "name": "Hang va Dich vu Cong nghiep",
+   "first": "2003-08-27",
+   "last": "2026-11-03",
+   "rows": 5781,
+   "first_eligible": "2004-06-18"
+  },
+  "ICB_3300": {
+   "name": "O to va phu tung",
+   "first": "2006-12-21",
+   "last": "2026-11-03",
+   "rows": 4948,
+   "first_eligible": "2007-10-15"
+  },
+  "ICB_3500": {
+   "name": "Thuc pham va do uong",
+   "first": "2003-08-27",
+   "last": "2026-11-03",
+   "rows": 5781,
+   "first_eligible": "2004-06-18"
+  },
+  "ICB_3700": {
+   "name": "Hang ca nhan va Gia dung",
+   "first": "2003-08-27",
+   "last": "2026-11-03",
+   "rows": 5781,
+   "first_eligible": "2004-06-18"
+  },
+  "ICB_4500": {
+   "name": "Y te",
+   "first": "2006-12-04",
+   "last": "2026-11-03",
+   "rows": 4961,
+   "first_eligible": "2007-09-26"
+  },
+  "ICB_5300": {
+   "name": "Ban le",
+   "first": "2006-08-07",
+   "last": "2026-11-03",
+   "rows": 5045,
+   "first_eligible": "2007-05-30"
+  },
+  "ICB_5500": {
+   "name": "Truyen thong",
+   "first": "2005-07-11",
+   "last": "2026-11-03",
+   "rows": 5315,
+   "first_eligible": "2006-04-27"
+  },
+  "ICB_5700": {
+   "name": "Du lich va Giai tri",
+   "first": "2003-08-27",
+   "last": "2026-11-03",
+   "rows": 5781,
+   "first_eligible": "2004-06-18"
+  },
+  "ICB_6500": {
+   "name": "Vien thong",
+   "first": "2009-12-10",
+   "last": "2026-11-03",
+   "rows": 4209,
+   "first_eligible": "2010-10-05"
+  },
+  "ICB_7500": {
+   "name": "Dien nuoc va xang dau khi dot",
+   "first": "2003-08-27",
+   "last": "2026-11-03",
+   "rows": 5781,
+   "first_eligible": "2004-06-18"
+  },
+  "ICB_8300": {
+   "name": "Ngan hang",
+   "first": "2006-07-12",
+   "last": "2026-11-03",
+   "rows": 5063,
+   "first_eligible": "2007-05-04"
+  },
+  "ICB_8500": {
+   "name": "Bao hiem",
+   "first": "2006-03-13",
+   "last": "2026-11-03",
+   "rows": 5126,
+   "first_eligible": "2007-01-23"
+  },
+  "ICB_8600": {
+   "name": "Bat dong san",
+   "first": "2006-07-06",
+   "last": "2026-11-03",
+   "rows": 5067,
+   "first_eligible": "2007-04-24"
+  },
+  "ICB_8700": {
+   "name": "Dich vu tai chinh",
+   "first": "2006-12-15",
+   "last": "2026-11-03",
+   "rows": 4952,
+   "first_eligible": "2007-10-09"
+  },
+  "ICB_9500": {
+   "name": "Cong nghe Thong tin",
+   "first": "2003-08-27",
+   "last": "2026-11-03",
+   "rows": 5781,
+   "first_eligible": "2004-06-18"
+  },
+  "VNINDEX": {
+   "first": "2003-08-27",
+   "last": "2026-11-03",
+   "rows": 5781
+  }
+ }
+}
