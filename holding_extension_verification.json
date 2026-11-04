@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "config_count": 3136,
+  "added_20_session_configs": 784,
+  "existing_10_session_configs_reconciled": 784,
+  "old_rows_unchanged": true,
+  "checked_baskets_10": 22808,
+  "checked_baskets_20": 18264,
+  "data_end": "2026-11-03",
+  "complete_hold_only": true,
+  "checks": [
+    "next-session open",
+    "exact 10/20-session duration",
+    "no overlapping baskets per configuration",
+    "equal entry weights",
+    "signal-date leader ranks",
+    "sweep pivot known before event",
+    "returns from original OHLC",
+    "independent PF/average",
+    "all previous 10-session metrics unchanged"
+  ],
+  "source_sha256": {
+    "BATS_SPY, 1D_a4021.csv": "cce93f189fbabeeca6a0ced2502b231ab914fbf94e155bbaf3cf11528b5d91d7",
+    "BATS_XLB, 1D_72469.csv": "cc96c6f0caf436a35483fb2c327e666372c16cccacd17b7bd6aad9fa1368cb00",
+    "BATS_XLC, 1D_b33ed.csv": "d45fc142eb0c38484068e74a54984d243c43790e41cbf352105a47216cc16406",
+    "BATS_XLE, 1D_3b2ed.csv": "a9421c42feea0974f691ce4cf46155ccb47bdbe5131a6673764815d01873b717",
+    "BATS_XLF, 1D_d7712.csv": "351a546681d592897f12c6305f1e2903496bf4bfa4d346a83bb3ea2cd938114c",
+    "BATS_XLI, 1D_511b0.csv": "d3c058aa3531715314cdbcdf88c1fdcd41bcc6488000b88d6ba69cd6f15f0eeb",
+    "BATS_XLK, 1D_fb4e7.csv": "969f70030ddc20b0f39739e1a92e69fbfa9114309cf096119e367be9a9505104",
+    "BATS_XLP, 1D_2fdf6.csv": "36aaa699a989c2f788026fe0aaeafacce4d2804e55e94269c0fa0e28543bf473",
+    "BATS_XLRE, 1D_8aff7.csv": "b6da56bfe04b940b61760531a1f8c5d1fa5a73c970670311536915f745787cd8",
+    "BATS_XLU, 1D_284bd.csv": "9279b92c8a31dd72b57b8f44f6c588d8f743b2547d4670935993d96e8051ed7f",
+    "BATS_XLV, 1D_8b59d.csv": "36ae51e582a7977f51ad0fc32ce7b8170b255e3462b15d475039be74501687fd",
+    "BATS_XLY, 1D_f4853.csv": "6a9f2167552de28c123fe951c062921c7495e3ac9005598325612df8180d0d8a"
+  }
+}

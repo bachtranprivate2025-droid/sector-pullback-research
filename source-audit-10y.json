@@ -1,0 +1,137 @@
+{
+  "sources": {
+    "SPY": {
+      "source": "Yahoo Finance MCP get_historical_stock_prices",
+      "adjusted": true,
+      "fetched_at": "2026-11-04T15:55:29.664Z",
+      "first": "2012-01-03",
+      "last": "2026-11-03",
+      "rows": 3731,
+      "snapshot_sha256": "ebfad8f99f1a8b4c4bb28ca1bd1594c71f2f15b460bab3221da085be986854e6",
+      "missing_spy_sessions_after_first": 0
+    },
+    "XLB": {
+      "source": "Yahoo Finance MCP get_historical_stock_prices",
+      "adjusted": true,
+      "fetched_at": "2026-11-04T15:55:50.440Z",
+      "first": "2012-01-03",
+      "last": "2026-11-03",
+      "rows": 3731,
+      "snapshot_sha256": "4ca20b4a730477758db5814736b6b1a7bf148495f86c0de5d83283e0377e5a2f",
+      "missing_spy_sessions_after_first": 0
+    },
+    "XLC": {
+      "source": "Yahoo Finance MCP get_historical_stock_prices",
+      "adjusted": true,
+      "fetched_at": "2026-11-04T15:55:50.723Z",
+      "first": "2018-06-19",
+      "last": "2026-11-03",
+      "rows": 2106,
+      "snapshot_sha256": "891b624e72e286f4caf07609f525375d0b167b385ec102827bf7aa194bf32cdd",
+      "missing_spy_sessions_after_first": 0
+    },
+    "XLE": {
+      "source": "Yahoo Finance MCP get_historical_stock_prices",
+      "adjusted": true,
+      "fetched_at": "2026-11-04T15:55:50.962Z",
+      "first": "2012-01-03",
+      "last": "2026-11-03",
+      "rows": 3731,
+      "snapshot_sha256": "3f3dc1bc91918e00f5bbb363f8eaf7417f1a186070c909d393441b5c6217c011",
+      "missing_spy_sessions_after_first": 0
+    },
+    "XLF": {
+      "source": "Yahoo Finance MCP get_historical_stock_prices",
+      "adjusted": true,
+      "fetched_at": "2026-11-04T15:55:51.233Z",
+      "first": "2012-01-03",
+      "last": "2026-11-03",
+      "rows": 3731,
+      "snapshot_sha256": "69fe57a457d070984eb7f31d828a0a6cc2c6ae733cee61fcd39726f961e8e737",
+      "missing_spy_sessions_after_first": 0
+    },
+    "XLI": {
+      "source": "Yahoo Finance MCP get_historical_stock_prices",
+      "adjusted": true,
+      "fetched_at": "2026-11-04T15:57:07.248Z",
+      "first": "2012-01-03",
+      "last": "2026-11-03",
+      "rows": 3731,
+      "snapshot_sha256": "ed6e28a83a5974b9088354beaf882eb30e7f06cb78a54410e79dc8eaaa814b01",
+      "missing_spy_sessions_after_first": 0
+    },
+    "XLK": {
+      "source": "Yahoo Finance MCP get_historical_stock_prices",
+      "adjusted": true,
+      "fetched_at": "2026-11-04T15:57:07.502Z",
+      "first": "2012-01-03",
+      "last": "2026-11-03",
+      "rows": 3731,
+      "snapshot_sha256": "fc3e228fb628716d2db2c7afc51923d2e7843563ea4ac313f2e323382ce9387e",
+      "missing_spy_sessions_after_first": 0
+    },
+    "XLP": {
+      "source": "Yahoo Finance MCP get_historical_stock_prices",
+      "adjusted": true,
+      "fetched_at": "2026-11-04T15:57:07.746Z",
+      "first": "2012-01-03",
+      "last": "2026-11-03",
+      "rows": 3731,
+      "snapshot_sha256": "edf0867585baf567f5b1599710db3636cb5005867cfc6deeb50943a6d823fd1b",
+      "missing_spy_sessions_after_first": 0
+    },
+    "XLRE": {
+      "source": "Yahoo Finance MCP get_historical_stock_prices",
+      "adjusted": true,
+      "fetched_at": "2026-11-04T15:57:07.984Z",
+      "first": "2015-10-08",
+      "last": "2026-11-03",
+      "rows": 2784,
+      "snapshot_sha256": "5ec104ad77ff11de19c1645f8d20d02bf8e64400df3ba0ed8601f4f9868abeef",
+      "missing_spy_sessions_after_first": 0
+    },
+    "XLU": {
+      "source": "Yahoo Finance MCP get_historical_stock_prices",
+      "adjusted": true,
+      "fetched_at": "2026-11-04T15:57:27.381Z",
+      "first": "2012-01-03",
+      "last": "2026-11-03",
+      "rows": 3731,
+      "snapshot_sha256": "c7964fd7d3a6eced3af793094931f80755531350a5af80777d2900c1169fa25c",
+      "missing_spy_sessions_after_first": 0
+    },
+    "XLV": {
+      "source": "Yahoo Finance MCP get_historical_stock_prices",
+      "adjusted": true,
+      "fetched_at": "2026-11-04T15:57:27.667Z",
+      "first": "2012-01-03",
+      "last": "2026-11-03",
+      "rows": 3731,
+      "snapshot_sha256": "8d2e0629cc8546530455207e04d992b12f7d2ebf5be2c36d76456189c30130ad",
+      "missing_spy_sessions_after_first": 0
+    },
+    "XLY": {
+      "source": "Yahoo Finance MCP get_historical_stock_prices",
+      "adjusted": true,
+      "fetched_at": "2026-11-04T15:57:27.911Z",
+      "first": "2012-01-03",
+      "last": "2026-11-03",
+      "rows": 3731,
+      "snapshot_sha256": "3eb8c1d82aaad9d11b23eba797571a18c29ca2c4a35bbf53d298e287dfd36a25",
+      "missing_spy_sessions_after_first": 0
+    }
+  },
+  "evaluation_start": "2016-11-04",
+  "evaluation_end": "2026-11-03",
+  "evaluation_sessions": 2512,
+  "raw_warmup_start": "2012-01-03",
+  "eligible_universe_size_by_session": {
+    "10": 606,
+    "11": 1906
+  },
+  "XLC_first_eligible_signal": "2019-04-05",
+  "XLC_first_price": "2018-06-19",
+  "universe_rule": "Only ETFs with 200 completed daily sessions before signal; 10 then 11 eligible sector ETFs; no synthetic XLC history",
+  "inception_reference": "https://www.ssga.com/library-content/products/factsheets/etfs/us/factsheet-us-en-xlc.pdf",
+  "fetch_rule": "One consistent adjusted Yahoo dataset, no splice with TradingView; current partial session 2026-11-04 excluded"
+}

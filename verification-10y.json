@@ -1,0 +1,27 @@
+{
+  "status": "PASS",
+  "config_count": 3136,
+  "basket_checks": 118200,
+  "legacy_engine_regression": {
+    "status": "PASS",
+    "configuration_metrics_matched": 3136,
+    "source": "original TradingView CSV",
+    "tolerance": 1e-10
+  },
+  "checks": [
+    "original 3136 configuration metrics reconciled",
+    "OHLC validity and uniqueness",
+    "no missing SPY sessions after ETF first date",
+    "prior-session 200-bar ETF eligibility",
+    "rank at signal close",
+    "next open fill",
+    "equal entry weights",
+    "exact hold duration",
+    "no overlapping baskets per configuration",
+    "confirmed pivots before sweep",
+    "net returns and PF",
+    "paired BR3 sample counts"
+  ],
+  "first_signal": "2016-11-08",
+  "last_complete_exit": "2026-10-30"
+}

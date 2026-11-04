@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10161d">
+  <meta name="description" content="Báo cáo MA pullback và sweep reversal của SPY. Long-only, Top 3 ETF chia đều vốn; bảng kết quả có bộ lọc và sắp xếp.">
+  <title>Pullback Research — Sector Rotation</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="sector-theme.css?v=6">
+  <script defer src="load-report.js?v=7"></script>
+</head>
+<body class="data-loading">
+<div class="shell">
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Pullback Research, về đầu trang"><span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>PULLBACK<span class="brand-light"> / RESEARCH</span></span></a>
+    <div class="top-actions"><span class="status-pill"><span class="status-dot"></span>Báo cáo lịch sử</span><button class="icon-button" id="fullscreen" aria-label="Xem toàn màn hình" title="Toàn màn hình">⛶</button><a class="button secondary" href="research-results.csv" download><span aria-hidden="true">↓</span> Tải CSV</a></div>
+  </header>
+
+  <main>
+    <section class="sample-bar" aria-label="Chọn mẫu backtest"><div><b>MẪU BACKTEST</b><span>Mỗi bộ dùng một nguồn giá nhất quán</span></div><nav aria-label="Bộ dữ liệu"><a href="?sample=ten-year" data-sample="ten-year" class="active">10 năm · Yahoo điều chỉnh</a><a href="?sample=original" data-sample="original">CSV gốc · ~7,5 năm</a></nav></section>
+    <p class="sample-note" id="sample-note" role="status">Đang tải bộ dữ liệu…</p>
+    <section class="hero" aria-labelledby="report-title">
+      <div><div class="eyebrow"><span class="tiny-rule"></span> SECTOR ROTATION · LONG-ONLY</div><h1 id="report-title">Đọc nhịp pullback.<br><span>Chọn ngành để mua.</span></h1><p class="hero-description">MA Daily, MA Weekly và sweep swing low của SPY.<br>So sánh leader với bottom recover, trên cùng quy tắc giao dịch.</p><div class="hero-tags"><span>11 ETF ngành</span><span>Top 3 · ⅓ vốn / mã</span><span>Phí khứ hồi 0,10%</span></div></div>
+      <aside class="report-stamp"><div class="stamp-header"><span class="stamp-dot"></span> CHỐT DỮ LIỆU</div><strong>03.11.2026</strong><p id="source-label">Đang tải bộ dữ liệu…</p><div class="stamp-divider"></div><div class="stamp-foot"><span>Phạm vi kiểm tra</span><b>3.136 cấu hình</b></div><small>Nghiên cứu lịch sử.<br>Chưa có kiểm định độc lập trên dữ liệu tương lai.</small></aside>
+    </section>
+
+    <section class="holding-bar" aria-label="Thời gian giữ backtest"><div><b>THỜI GIAN GIỮ</b><span>Chọn kỳ để đổi bảng tóm tắt và các ô kết quả</span></div><div class="holding-buttons" role="group" aria-label="Chọn nhanh kỳ giữ"><button data-hold="5" class="active" aria-pressed="true">5 phiên</button><button data-hold="10" aria-pressed="false">10 phiên</button><button data-hold="20" aria-pressed="false">20 phiên</button><button data-hold="" aria-pressed="false">Mọi kỳ</button></div></section>
+    <p class="holding-context" id="holding-context" role="status">Kết quả giữ 5 phiên · Mua open hôm sau, bán close phiên số 5</p>
+    <section class="metrics-grid" aria-label="Các điểm chính của báo cáo">
+      <button class="metric-card accent-mint" data-spot="daily"><span class="metric-label">MA50 DAILY · CHẠM ĐƯỜNG <span>↗</span></span><div class="metric-main"><strong>3,41</strong><span>Profit factor</span></div><div class="metric-bottom"><span><b>42</b> rổ</span><span><b>76,2%</b> win rate</span><span class="tag mint">Top 3 leader</span></div></button>
+      <button class="metric-card accent-purple" data-spot="weekly"><span class="metric-label">MA20 WEEKLY · SWEET SPOT <span>↗</span></span><div class="metric-main"><strong>2,86</strong><span>Profit factor</span></div><div class="metric-bottom"><span><b>29</b> rổ</span><span><b>72,4%</b> win rate</span><span class="tag purple">±0,5 ATR</span></div></button>
+      <button class="metric-card accent-blue" data-spot="recover"><span class="metric-label">MA20W · BOTTOM RECOVER <span>↗</span></span><div class="metric-main"><strong>3,31</strong><span>Profit factor</span></div><div class="metric-bottom"><span><b>4</b> nhịp có đổi mã</span><span class="tag blue">Cần kiểm định tiếp</span></div></button>
+      <div class="metric-card allocation-card"><span class="metric-label">CẤU TRÚC RỔ ĐANG THEO DÕI</span><div class="allocation-bar"><span></span><span></span><span></span></div><div class="allocation-numbers"><b>⅓</b><b>⅓</b><b>⅓</b></div><div class="metric-bottom"><span>Chọn mã sau close</span><span>→ Mua open hôm sau</span></div></div>
+    </section>
+
+    <section class="workspace" aria-labelledby="table-title">
+      <div class="workspace-heading"><div><div class="eyebrow small">KẾT QUẢ BACKTEST</div><h2 id="table-title">Bảng quyết định</h2></div><div class="view-switch" role="group" aria-label="Chế độ xem"><button class="active" id="summary-view" aria-pressed="true">Tóm tắt</button><button id="all-view" aria-pressed="false">Toàn bộ <span>3.136</span></button></div></div>
+      <div class="scope-tabs" role="group" aria-label="Nhóm setup"><button class="active" data-scope="all">Tất cả</button><button data-scope="daily">MA Daily</button><button data-scope="weekly">MA Weekly</button><button data-scope="sweep">Sweep reversal <span class="small-badge">Mới</span></button><span class="scope-note">Bấm tiêu đề cột để sort ↕</span></div>
+      <div class="filter-panel">
+        <label class="search-field"><span aria-hidden="true">⌕</span><input type="search" id="search" placeholder="Tìm MA50, recover, sweep…" aria-label="Tìm setup hoặc cách chọn ngành"></label>
+        <label class="filter"><span>Chọn ngành</span><select id="policy"><option value="">Tất cả cách chọn</option></select></label>
+        <label class="filter"><span>Điểm vào</span><select id="confirmation"><option value="">Tất cả xác nhận</option></select></label>
+        <label class="filter narrow"><span>Giữ</span><select id="hold"><option value="">Mọi thời gian</option><option value="3">3 phiên</option><option value="5" selected>5 phiên</option><option value="10">10 phiên</option><option value="20">20 phiên</option></select></label>
+        <button class="text-button" id="more-filters" aria-expanded="false">Lọc thêm <span aria-hidden="true">⌄</span></button>
+      </div>
+      <div id="advanced-filters" class="advanced-filters" hidden>
+        <label class="filter"><span>MA / setup cụ thể</span><select id="ma"><option value="">Tất cả MA & sweep</option></select></label>
+        <label class="filter"><span>Vùng quanh MA</span><select id="width"><option value="">Tất cả độ rộng</option><option value="0">Chạm đúng đường</option><option value="0.25">±0,25 ATR</option><option value="0.5">±0,5 ATR</option><option value="0.75">±0,75 ATR</option></select></label>
+        <label class="filter narrow"><span>Tối thiểu số rổ</span><input id="min-n" type="number" min="0" max="1000" value="0"></label>
+        <label class="filter narrow"><span>PF tối thiểu</span><input id="min-pf" type="number" min="0" step="0.1" value="0"></label>
+        <label class="checkbox-filter"><input type="checkbox" id="benchmark"> Hiện SPY đối chiếu</label>
+      </div>
+      <p class="bottom-note"><b>Top bottom hồi nhanh (BR3):</b> Bottom 4 theo PERF 20 phiên hôm trước → chọn 3 ETF có PERF 3 phiên cao nhất tại ngày tín hiệu. Đây là hồi tương đối, vẫn có thể âm. Cột đối chiếu cùng setup, kỳ giữ và phí 0,10%; bấm tiêu đề để sort theo PF, bấm ô để xem chi tiết.</p>
+      <div class="results-toolbar"><p id="result-count" role="status" aria-live="polite"></p><div class="toolbar-buttons"><button class="text-button" id="reset">↺ Đặt lại</button><button class="text-button" id="export">↓ Xuất bảng đang lọc</button><button class="text-button" id="table-fullscreen" title="Mở riêng bảng toàn màn hình">⛶ Phóng bảng</button></div></div>
+      <div class="table-scroll" id="table-scroll" tabindex="0" aria-label="Bảng kết quả, cuộn ngang để xem thêm chỉ số">
+        <table id="research-table"><thead><tr id="table-head"></tr></thead><tbody id="table-body"></tbody></table>
+        <div class="empty-state" id="empty" hidden><span>⌕</span><h3>Chưa có kết quả phù hợp</h3><p>Giảm số rổ tối thiểu hoặc xóa bớt bộ lọc.</p><button class="button secondary" id="empty-reset">Đặt lại bộ lọc</button></div>
+      </div>
+      <div class="horizontal-scroll" id="horizontal-scroll" tabindex="0" aria-label="Thanh cuộn ngang bảng"><div id="horizontal-width"></div></div>
+      <div class="table-footer"><div class="legend"><span><i class="legend-dot purple-dot"></i>PF ≥ 3</span><span><i class="legend-dot green-dot"></i>2 ≤ PF &lt; 3</span><span><i class="legend-dot blue-dot"></i>1 ≤ PF &lt; 2</span><span><i class="legend-dot red-dot"></i>PF &lt; 1</span><span><i class="legend-dot amber-dot"></i>Ít hơn 20 rổ</span></div><div class="pagination"><label>Hiện <select id="page-size" aria-label="Số dòng mỗi trang"><option>25</option><option>50</option><option>100</option></select></label><button id="prev-page" class="icon-button" aria-label="Trang trước">‹</button><span id="page-info"></span><button id="next-page" class="icon-button" aria-label="Trang sau">›</button></div></div>
+      <p class="table-caption">PF tính trên cùng vốn cơ sở cho mỗi rổ. Một rổ có 3 mã vẫn là <b>một quan sát</b>. Từng kỳ giữ chạy lịch riêng, bỏ tín hiệu khi còn vị thế; số rổ và ngày vào có thể khác nhau. Chỉ tính rổ đã đủ dữ liệu thoát. Các cấu hình có ngày chồng nhau; không cộng các dòng thành một danh mục. <a href="holding_comparison_baskets.csv" download>Tải nhật ký 5/10/20 phiên</a> · <a href="holding_comparison_legs.csv" download>Giá khớp từng ETF</a></p>
+    </section>
+
+    <section class="reading-grid" aria-label="Hướng dẫn đọc báo cáo">
+      <article class="reading-card"><div class="reading-icon mint-text">01 / QUY TẮC</div><h3>Mua theo nhịp, giữ theo lịch.</h3><p>Đọc setup sau close. Mua 3 mã tại open phiên kế tiếp, chia đều vốn dành cho rổ. Giữ nguyên mã đến cuối phiên số 3, 5, 10 hoặc 20 theo từng dòng. Không mua chồng rổ.</p></article>
+      <article class="reading-card"><div class="reading-icon purple-text">02 / RECOVERY</div><h3>Bottom phải hồi thật.</h3><p>“Bottom hồi + leader” ưu tiên mã thuộc Bottom 3 hôm trước, tăng giá và vượt SPY cả trong 3 phiên lẫn phiên tín hiệu. Thiếu vị trí thì điền bằng leader. Không phải mua mặc định cả ba ngành yếu.</p></article>
+      <article class="reading-card"><div class="reading-icon amber-text">03 / GIỚI HẠN</div><h3>PF đẹp cần đủ số mẫu.</h3><p>Dữ liệu đã được xem qua nhiều lượt nghiên cứu. Các cấu hình là thăm dò lịch sử; chưa có stop-loss hoặc funding. PF cao nhất sau tìm kiếm chưa phải mức kỳ vọng của giao dịch mới.</p></article>
+    </section>
+
+    <details class="methodology"><summary>Định nghĩa MA, sweet spot và sweep swing low <span>＋</span></summary><div class="methodology-content"><p><b>MA:</b> SMA tính lại từ close. MA Daily lấy phiên trước; MA Weekly chỉ dùng tuần đã hoàn tất. Vùng sweet spot = MA ± độ rộng × ATR14 Wilder phiên trước.</p><p><b>Nhịp mới:</b> SPY từ trên quay xuống chạm đường hoặc đi vào vùng, sau 3 phiên chưa chạm. Gap xuyên cũng được tính. “Giữ MA” yêu cầu close ngày chạm ≥ tâm MA. “Lấy lại MA” chờ lần đầu close ≥ tâm MA trong ngày chạm hoặc tối đa 5 phiên sau.</p><p><b>Sweep:</b> swing low thấp hơn 2 nến trái và 2 nến phải, chỉ dùng sau xác nhận và không quá 40 phiên tuổi. SPY low xuyên đáy rồi close lấy lại đáy. Bản xác nhận đợi ngay phiên tiếp theo close vượt high nến sweep.</p><p><b>Chi phí & rủi ro:</b> 0,10% khứ hồi theo số vốn đầu tư, không nhân 3 vì có 3 mã. Chưa có thuế/funding hoặc hard stop. Drawdown trong bảng chi tiết chỉ tại thời điểm đóng rổ, không phải drawdown toàn bộ thời gian giữ. Price return dựa trên CSV cung cấp; chưa xác minh thiết lập điều chỉnh dividend/split.</p><a href="research-methodology.md" download>↓ Tải bản phương pháp và tổng kết</a></div></details>
+    <footer class="page-footer"><span>PULLBACK / RESEARCH <i>·</i> Báo cáo lịch sử, không phải tín hiệu live</span><span>11 ngành <i>·</i> Long-only <i>·</i> Dữ liệu đến 03.11.2026</span></footer>
+  </main>
+</div>
+
+<div id="drawer-backdrop" class="drawer-backdrop" hidden></div>
+<aside id="detail-drawer" class="detail-drawer" role="dialog" aria-modal="true" aria-labelledby="detail-title" hidden><div class="drawer-top"><span class="eyebrow small">CHI TIẾT CẤU HÌNH</span><button id="close-drawer" class="icon-button" aria-label="Đóng chi tiết">×</button></div><div id="detail-content"></div></aside>
+<div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>
