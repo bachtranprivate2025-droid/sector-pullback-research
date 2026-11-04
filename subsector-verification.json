@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "symbols": 32,
+  "configs": 2940,
+  "setup_hold_comparisons": 294,
+  "trade_checks": 32470,
+  "checks": [
+    "OHLC validity",
+    "unique dates",
+    "complete evaluation calendar",
+    "no forming session",
+    "200 prior sessions",
+    "prior 20-session dollar-volume gate",
+    "family diversification",
+    "next-session open",
+    "equal entry weights",
+    "exact holding length",
+    "no overlapping baskets per strategy",
+    "confirmed sweep pivot",
+    "independent leader ranking",
+    "three consecutive daily excess checks",
+    "source return reconciliation",
+    "paired sample counts"
+  ],
+  "note": "Trades across configurations overlap. Total checks are not independent observations."
+}
