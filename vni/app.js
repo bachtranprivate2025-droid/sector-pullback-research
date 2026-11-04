@@ -43,7 +43,14 @@
     return `<button class="bottom-result" type="button" data-bottom-detail="${b.id}" aria-label="Xem bottom hồi nhanh: ${escape(maLabel(r))}, giữ ${r.hold} phiên" title="BR3: Bottom 4 theo 20D hôm trước → Top 3 theo PERF 3D tại ngày tín hiệu. Bấm xem chi tiết."><span class="bottom-main"><span class="bottom-label">PF</span>${pfHTML(b.all.pf,b.all.n)}<span class="${b.all.n<20?'sample-warning':'cell-sub'}">${b.all.n} rổ${b.all.n<20?' · Ít mẫu':''}</span></span><span class="bottom-metrics"><span>Win <b>${pct(b.all.wr,1)}</b></span><span>TB/rổ <b class="${positiveClass(b.all.avg)}">${signed(b.all.avg)}</b></span></span></button>`;
   }
   function addOptions(id,items){for(const [value,label] of items){const o=document.createElement('option');o.value=value;o.textContent=label;$(id).append(o);}}
-  addOptions('policy',Object.entries(policyLabels));addOptions('confirmation',Object.entries(entryLabels));addOptions('trend',Object.entries(trendLabels));
+  addOptions('policy',Object.entries(policyLabels));addOptions('trend',Object.entries(trendLabels));
+  (()=>{const sel=$('confirmation');const groups=[['D','Daily',['touch','hold','reclaim']],['W','Weekly',['touch','hold','reclaim']],['S','Sweep swing low',['sweep_close','sweep_next_confirm']]];
+    for(const [tf,label,confs] of groups){const g=document.createElement('optgroup');g.label=label;
+      const all=document.createElement('option');all.value=tf+':';all.textContent=`${label} · tất cả`;g.append(all);
+      for(const c of confs){const o=document.createElement('option');o.value=tf+':'+c;o.textContent=`${label} · ${entryLabels[c]}`;g.append(o);}
+      sel.append(g);}
+  })();
+  const entryTF=r=>r.ma==='SWING_LOW'?'S':r.ma[0];
   addOptions('ma',maKeys.map(ma=>[ma,ma==='SWING_LOW'?'VNI sweep swing low':maLabel({ma})]));
 
   const columns=[
@@ -81,7 +88,8 @@
       if(state.scope==='daily'&&!r.ma.startsWith('D'))return false;
       if(state.scope==='weekly'&&!r.ma.startsWith('W'))return false;
       if(state.scope==='sweep'&&r.ma!=='SWING_LOW')return false;
-      if(policy&&r.policy!==policy||confirmation&&r.confirmation!==confirmation||hold&&r.hold!==Number(hold)||ma&&r.ma!==ma)return false;
+      if(confirmation){const [tf,c]=confirmation.split(':');if(entryTF(r)!==tf||c&&r.confirmation!==c)return false;}
+      if(policy&&r.policy!==policy||hold&&r.hold!==Number(hold)||ma&&r.ma!==ma)return false;
       if(width!==''&&(r.width_atr==null||r.width_atr!==Number(width)))return false;
       if(r.all.n<minN||minPF>0&&(r.all.pf==null||r.all.pf<minPF))return false;
       if(q&&!norm(`${maLabel(r)} ${r.ma} ${widthLabel(r)} ${entryLabels[r.confirmation]} ${policyLabels[r.policy]} ${policyShort[r.policy]} ${trendLabels[r.trend]}`).includes(q))return false;
