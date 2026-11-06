@@ -24,11 +24,12 @@ SMA10/20/50/200 Daily và Weekly. Daily dùng close phiên trước; Weekly ch�
 
 Sweep swing low riêng biệt: pivot 2 nến trái/2 nến phải, chỉ dùng sau khi đã xác nhận trước ngày sweep; tuổi tối đa 40 phiên. SPY xuyên đáy rồi đóng lại trên đáy. Bản xác nhận cần ngay phiên kế tiếp close vượt high nến sweep.
 
-98 setup × 3 kỳ giữ 5/10/20 × 10 cách chọn = 2.940 cấu hình. Tham số setup lấy từ nghiên cứu cũ, không tối ưu theo kết quả sub-sector mới. Tóm tắt hiển thị preset cố định: Daily chạm đúng đường + giữ MA, Weekly ±0,5 ATR + giữ MA, hai cách sweep. Không chọn preset theo PF cao nhất.
+98 setup × 3 kỳ giữ 5/10/20 × 15 cách chọn = 4.410 cấu hình. Tham số setup lấy từ nghiên cứu cũ, không tối ưu theo kết quả sub-sector mới. Tóm tắt hiển thị preset cố định: Daily chạm đúng đường + giữ MA, Weekly ±0,5 ATR + giữ MA, hai cách sweep. Không chọn preset theo PF cao nhất. Toàn bộ chỉ số và nhật ký của 2.940 cấu hình trước khi thêm hạng 4–6 được đối chiếu và giữ nguyên.
 
 ## Cách chọn tài sản
 
 - S20/S60: xếp performance 20/60 phiên, chọn ba ETF mạnh nhất khác nhóm.
+- M20/M60: cùng bảng xếp hạng và điều kiện thanh khoản như S20/S60, lấy riêng hạng 4–5–6. Với sub-sector, gom ETF cùng nhóm trước khi xác định sáu vị trí; rổ 1–3 và 4–6 không trùng ticker hoặc nhóm nghiên cứu. Đây là ba mã tiếp theo trong thứ hạng, không phải mua tổng cộng bốn, năm hay sáu mã.
 - B3: ba ETF yếu nhất theo performance 20 phiên hôm trước, khác nhóm, chưa yêu cầu hồi.
 - BR3: Bottom 4 hôm trước, khác nhóm, chọn ba mã có performance cộng dồn 3 phiên cao nhất tại ngày tín hiệu. Vẫn có thể âm hoặc kém SPY.
 - Rmix: trong Bottom 3, ưu tiên mã performance dương và vượt SPY ở cả 1D lẫn cộng dồn 3D. Thiếu thì điền leader S20, giữ khác nhóm.
@@ -36,9 +37,19 @@ Sweep swing low riêng biệt: pivot 2 nến trái/2 nến phải, chỉ dùng s
 - R3each: trong Bottom 4, ưu tiên mã vượt SPY TỪNG NGÀY trong cả ba phiên gần nhất, đồng thời performance cộng dồn 3D dương. Thiếu thì điền S20. Đây là phép thử khác với Rmix.
 - Parent: xếp Top 3 sector 20D trước; với mỗi sector, chọn sub-sector có performance 20D cao nhất nếu vượt sector đó, còn lại giữ ETF sector. Rổ có thể kết hợp XL và sub-sector, không phải rổ sub-sector thuần.
 - XL20: Top 3 trong 11 Select Sector SPDR ETF theo performance 20D.
+- XL60: Top 3 trong 11 sector theo performance 60D.
+- XL45620/XL45660: riêng hạng 4–5–6 trong 11 sector theo performance 20/60 phiên.
 - SPY: một mã đối chiếu cùng thời điểm.
 
 Bottom được xếp từ yếu nhất lên, lấy tối đa một ETF mỗi nhóm. Bottom hôm trước phải còn đủ điều kiện thanh khoản ngày tín hiệu. Số “rổ có bottom” chỉ tính rổ có ít nhất một mã thực sự đạt điều kiện; những rổ fallback leader không được gọi là bottom thành công.
+
+## So sánh trực tiếp Top 3 với hạng 4–6
+
+Bốn cặp cố định: S20–M20, S60–M60, XL20–XL45620, XL60–XL45660. Mỗi cặp chạy trên toàn bộ 98 setup và ba kỳ giữ, tạo 1.176 dòng so sánh. Hai rổ mỗi cặp có ngày tín hiệu, ngày mua/thoát, vốn đầu vào, tỷ trọng và phí giống nhau. Chốt thứ hạng tại close tín hiệu; không đổi ticker giữa kỳ. Không lấy lợi nhuận tương lai để xếp hạng.
+
+Chênh lệch/rổ = return net của hạng 4–6 trừ return net của Top 3 trên đúng cùng giao dịch. Dương nghĩa là hạng 4–6 có return trung bình cao hơn, đơn vị điểm phần trăm. “4–6 thắng Top 3” là tỷ lệ các rổ có chênh lệch dương; cả hai rổ vẫn có thể cùng lỗ. Không gọi tỷ lệ này là win rate có lãi.
+
+So riêng PF, win rate, TB/rổ, rổ thua tệ nhất, phí 0,30%, bỏ ba rổ tốt nhất và từng năm. PF và TB/rổ có thể xếp hai rổ khác nhau; không ép thành một điểm số tổng hợp. Các dòng có ngày chồng nhau, nên 1.176 phép so sánh không phải 1.176 mẫu thị trường độc lập. Đây vẫn là khảo sát hồi cứu, chưa có holdout mới hay hiệu chỉnh cho việc thử nhiều giả thuyết.
 
 ## Giao dịch và thước đo
 
@@ -58,4 +69,4 @@ Không coi PF đẹp với dưới 20 rổ là mức kỳ vọng đáng tin. Xem
 
 ## Các file
 
-Gói nguồn: 32 CSV Daily (SPY + 11 sector + 20 sub-sector), source-audit.json và universe.csv. Gói backtest: results.csv, trades.csv, paired.csv, universe.csv, source-audit.json, verification.json và bản phương pháp này. Kiểm tra gồm lịch phiên, OHLC, dữ liệu khởi tạo, thanh khoản quá khứ, quy tắc khác nhóm, ngày khớp, thời gian giữ, không chồng rổ, sweep đã xác nhận, ranking leader độc lập và đối chiếu lợi nhuận/PF.
+Gói nguồn: 32 CSV Daily (SPY + 11 sector + 20 sub-sector), source-audit.json và universe.csv. Gói backtest: results.csv, trades.csv, paired.csv, rank456-comparison.csv, universe.csv, source-audit.json, verification.json và bản phương pháp này. Kiểm tra gồm lịch phiên, OHLC, dữ liệu khởi tạo, thanh khoản quá khứ, quy tắc khác nhóm, ngày khớp, thời gian giữ, không chồng rổ, sweep đã xác nhận, ranking leader/hạng 4–6 độc lập và đối chiếu lợi nhuận/PF. Có kiểm tra riêng việc hai rổ không trùng mã, cùng ngày giao dịch và kết quả cũ không đổi.

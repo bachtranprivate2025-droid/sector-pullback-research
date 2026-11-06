@@ -6,6 +6,8 @@
  const rules={
   S20:'Xếp hạng performance 20 phiên, chọn ba ETF mạnh nhất thuộc ba nhóm khác nhau.',
   S60:'Xếp hạng performance 60 phiên, chọn ba ETF mạnh nhất thuộc ba nhóm khác nhau.',
+  M20:'Xếp performance 20 phiên sau khi gom nhóm trùng; bỏ ba vị trí đầu, mua các vị trí 4–5–6. Chốt hạng tại close tín hiệu; không yêu cầu nhóm này đang tăng giá.',
+  M60:'Xếp performance 60 phiên sau khi gom nhóm trùng; bỏ ba vị trí đầu, mua các vị trí 4–5–6. Chốt hạng tại close tín hiệu; không yêu cầu nhóm này đang tăng giá.',
   B3:'Chọn ba ETF yếu nhất theo performance 20 phiên hôm trước, mỗi nhóm một mã. Chưa cần xác nhận hồi.',
   BR3:'Bottom 4 theo performance 20 phiên hôm trước → chọn ba mã có performance 3 phiên tốt nhất. Vẫn có thể âm hoặc kém SPY.',
   Rmix:'Trong Bottom 3 hôm trước, ưu tiên mã có performance dương và vượt SPY ở cả 1D lẫn cộng dồn 3D. Thiếu mã thì điền Top 3 leader 20D.',
@@ -13,6 +15,9 @@
   R3each:'Trong Bottom 4 hôm trước, ưu tiên mã vượt SPY TỪNG NGÀY ở cả ba phiên gần nhất và có performance cộng dồn 3D dương. Thiếu thì điền leader 20D.',
   Parent:'Chọn Top 3 sector 20D trước. Mỗi sector chọn nhánh con có performance 20D cao nhất nếu vượt sector đó; nếu không có hoặc không vượt thì giữ ETF sector. Đây là rổ kết hợp sector và sub-sector.',
   XL20:'Top 3 trong 11 ETF sector theo performance 20 phiên. Tính lại từ cùng dữ liệu TradingView và cùng lịch giao dịch.',
+  XL60:'Top 3 trong 11 ETF sector theo performance 60 phiên. Cùng dữ liệu TradingView, lịch tín hiệu và phí.',
+  XL45620:'Xếp 11 ETF sector theo performance 20 phiên tại close tín hiệu, mua riêng hạng 4–5–6. Chia đều ba mã; giữ nguyên đến ngày thoát.',
+  XL45660:'Xếp 11 ETF sector theo performance 60 phiên tại close tín hiệu, mua riêng hạng 4–5–6. Chia đều ba mã; giữ nguyên đến ngày thoát.',
   SPY:'Mua duy nhất SPY, cùng ngày vào và thoát với các rổ khác; cùng phí khứ hồi.'
  };
  const state={mode:'summary',scope:'all',key:'setup',desc:false,method:'S20',hold:5};
@@ -27,6 +32,7 @@
  const band=c=>c.width_atr==null?'Đáy đã xác nhận':c.width_atr===0?'Chạm đúng đường':`±${String(c.width_atr).replace('.',',')} ATR`;
  const metric=(c,m=state.method)=>c.methods[m].all;
  const pf=(c,m=state.method)=>{const x=metric(c,m),v=x.pf;return `<button class="pf ${v==null?'na':v>=3?'purple':v>=2?'green':v<1?'red':''} ${x.n<20?'low':''}" data-detail="${c.id}" data-method="${m}" aria-label="Chi tiết ${esc(D.methods[m])}, ${esc(ma(c))}, ${band(c)}, ${entries[c.confirmation]}, giữ ${c.hold} phiên">${num(v)}</button>`;};
+ const pp=x=>x==null?'—':(x>0?'+':'')+(x*100).toLocaleString('vi-VN',{minimumFractionDigits:2,maximumFractionDigits:2})+' đ.%';
  const add=(id,items)=>{for(const [value,label] of items){const o=document.createElement('option');o.value=value;o.textContent=label;$(id).append(o);}};
  add('method',Object.entries(D.methods));add('entry',Object.entries(entries));
  $('sessions').textContent=D.sessions.toLocaleString('vi-VN');$('date-range').textContent=`${date(D.start)} → ${date(D.end)}`;
@@ -77,7 +83,9 @@
   return 'Sau chạm vùng, chờ lần đầu SPY close ≥ tâm MA trong ngày chạm hoặc tối đa năm phiên sau. Mua open ngay sau phiên lấy lại MA.';
  }
  function chart(c,method){
-  const keys=[...new Set([method,'XL20','SPY'])],colors=['#45d99a','#74aaff','#c084fc'];
+  const pair=Object.values(c.rank_pairs||{}).find(p=>p.top===method||p.mid===method);
+  const other=pair?(pair.top===method?pair.mid:pair.top):null;
+  const keys=[...new Set([method,...(other?[other]:[]),'XL20','SPY'])],colors=['#45d99a','#74aaff','#c084fc','#e7b465'];
   if(!c.calendar.length)return '<p>Không có giao dịch hoàn tất trong mẫu.</p>';
   const lines=keys.map(k=>{let eq=1;return [0,...c.logs[k].map(t=>(eq*=1+t[1]-.001)-1)];});
   const vals=lines.flat(),lo=Math.min(0,...vals),hi=Math.max(.01,...vals),pad=(hi-lo)*.1,min=lo-pad,max=hi+pad;
@@ -98,7 +106,44 @@
   if(!$('detail').open)$('detail').showModal();$('detail').scrollTop=0;
  }
  $('close').onclick=()=>$('detail').close();$('detail').addEventListener('close',()=>lastFocus?.focus());
- $('export').onclick=()=>{const columns=['setup','band','entry_rule','hold','method','n','pf','win_rate','avg_net','bottom_pf','sector_pf','hybrid_pf','avg_excess_sector','pf_cost030','pf_drop3'];const lines=[columns,...filtered.map(c=>{const m=metric(c);return [ma(c),band(c),entries[c.confirmation],c.hold,D.methods[state.method],m.n,m.pf,m.wr,m.avg,metric(c,'BR3').pf,metric(c,'XL20').pf,metric(c,'Parent').pf,c.methods[state.method].paired?.avg_excess_XL20,c.methods[state.method].cost.pf,c.methods[state.method].drop.pf];})];const text='\uFEFF'+lines.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\r\n');const url=URL.createObjectURL(new Blob([text],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='subsector-filtered.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+ function downloadCsv(filename,lines){const text='\uFEFF'+lines.map(r=>r.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(',')).join('\r\n');const url=URL.createObjectURL(new Blob([text],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+ $('export').onclick=()=>{const columns=['setup','band','entry_rule','hold','method','n','pf','win_rate','avg_net','bottom_pf','sector_pf','hybrid_pf','avg_excess_sector','pf_cost030','pf_drop3'];const lines=[columns,...filtered.map(c=>{const m=metric(c);return [ma(c),band(c),entries[c.confirmation],c.hold,D.methods[state.method],m.n,m.pf,m.wr,m.avg,metric(c,'BR3').pf,metric(c,'XL20').pf,metric(c,'Parent').pf,c.methods[state.method].paired?.avg_excess_XL20,c.methods[state.method].cost.pf,c.methods[state.method].drop.pf];})];downloadCsv('subsector-filtered.csv',lines);};
+ const rankState={key:'setup',desc:false};let rankFiltered=[];
+ function rankSelection(){return {pair:$('rank-universe').value+$('rank-lookback').value,hold:Number($('rank-hold').value)};}
+ function rankColumns(pair){return [
+  {key:'setup',label:'Setup SPY',get:c=>ma(c)+' '+band(c)+' '+entries[c.confirmation]},
+  {key:'n',label:'Số rổ',get:c=>c.rank_pairs[pair].n},
+  {key:'topPF',label:'PF Top 3',get:c=>c.methods[c.rank_pairs[pair].top].all.pf},
+  {key:'midPF',label:'PF hạng 4–6',get:c=>c.methods[c.rank_pairs[pair].mid].all.pf},
+  {key:'topWR',label:'Win rate Top 3',get:c=>c.methods[c.rank_pairs[pair].top].all.wr},
+  {key:'midWR',label:'Win rate 4–6',get:c=>c.methods[c.rank_pairs[pair].mid].all.wr},
+  {key:'topAvg',label:'TB/rổ Top 3',get:c=>c.methods[c.rank_pairs[pair].top].all.avg},
+  {key:'midAvg',label:'TB/rổ 4–6',get:c=>c.methods[c.rank_pairs[pair].mid].all.avg},
+  {key:'diff',label:'4–6 hơn Top 3 / rổ',get:c=>c.rank_pairs[pair].avg_diff},
+  {key:'beats',label:'4–6 thắng Top 3',get:c=>c.rank_pairs[pair].mid_beats_top},
+  {key:'topWorst',label:'Thua tệ nhất Top 3',get:c=>c.methods[c.rank_pairs[pair].top].all.worst},
+  {key:'midWorst',label:'Thua tệ nhất 4–6',get:c=>c.methods[c.rank_pairs[pair].mid].all.worst},
+ ];}
+ function syncRankWidth(){$('rank-scroll-width').style.width=$('rank-scroll').scrollWidth+'px';$('rank-bottom-scroll').scrollLeft=$('rank-scroll').scrollLeft;}
+ function renderRank(){
+  const {pair,hold}=rankSelection(),q=$('rank-search').value.toLowerCase().trim(),min=Math.max(0,Number($('rank-min-n').value)||0),summary=$('rank-view').value==='summary',cols=rankColumns(pair),collator=new Intl.Collator('vi',{numeric:true});
+  rankFiltered=D.configs.filter(c=>c.hold===hold&&(!summary||isSummary(c))&&c.rank_pairs[pair].n>=min&&(!q||(ma(c)+' '+band(c)+' '+entries[c.confirmation]).toLowerCase().includes(q)));
+  const col=cols.find(c=>c.key===rankState.key);
+  rankFiltered.sort((a,b)=>{const x=col.get(a),y=col.get(b);if(x==null)return y==null?0:1;if(y==null)return-1;return (typeof x==='string'?collator.compare(x,y):x-y)*(rankState.desc?-1:1);});
+  $('rank-head').innerHTML=cols.map(c=>`<th scope="col" aria-sort="${rankState.key===c.key?(rankState.desc?'descending':'ascending'):'none'}"><button data-rank-sort="${c.key}">${c.label}<span class="sort">${rankState.key===c.key?(rankState.desc?'↓':'↑'):'↕'}</span></button></th>`).join('');
+  $('rank-body').innerHTML=rankFiltered.map(c=>{const p=c.rank_pairs[pair],a=c.methods[p.top].all,b=c.methods[p.mid].all;return `<tr><td><b>${ma(c)}</b><small>${band(c)} · ${entries[c.confirmation]}</small></td><td><b>${p.n}</b><small class="${p.n<20?'sample':''}">${p.n<20?'Ít mẫu':'rổ mỗi nhóm'}</small></td><td>${pf(c,p.top)}</td><td>${pf(c,p.mid)}</td><td>${pct(a.wr,1)}</td><td>${pct(b.wr,1)}</td><td class="${cls(a.avg)}">${signed(a.avg)}</td><td class="${cls(b.avg)}">${signed(b.avg)}</td><td class="rank-diff ${cls(p.avg_diff)}">${pp(p.avg_diff)}</td><td>${pct(p.mid_beats_top,1)}</td><td class="${cls(a.worst)}">${signed(a.worst)}</td><td class="${cls(b.worst)}">${signed(b.worst)}</td></tr>`;}).join('')||'<tr><td colspan="12" class="empty">Không có setup khớp bộ lọc. Anh giảm số rổ tối thiểu hoặc chọn Toàn bộ setup.</td></tr>';
+  $('rank-context').textContent=`${$('rank-universe').value==='sub'?'20 sub-sector · 18 nhóm':'11 sector'} · Xếp hạng PERF ${$('rank-lookback').value} phiên · giữ ${hold} phiên · phí khứ hồi 0,10% cho mỗi rổ`;
+  $('rank-count').textContent=`${rankFiltered.length} setup · Hai rổ dùng đúng cùng lịch tín hiệu`;
+  requestAnimationFrame(syncRankWidth);
+ }
+ for(const id of ['rank-universe','rank-lookback','rank-hold','rank-view','rank-search','rank-min-n'])$(id).addEventListener('input',renderRank);
+ $('rank-head').addEventListener('click',e=>{const b=e.target.closest('[data-rank-sort]');if(!b)return;const k=b.dataset.rankSort;if(k===rankState.key)rankState.desc=!rankState.desc;else{rankState.key=k;rankState.desc=k!=='setup';}renderRank();});
+ $('rank-body').addEventListener('click',e=>{const b=e.target.closest('[data-detail]');if(b)detail(Number(b.dataset.detail),b.dataset.method);});
+ $('rank-scroll').addEventListener('scroll',()=>{$('rank-bottom-scroll').scrollLeft=$('rank-scroll').scrollLeft;});
+ $('rank-bottom-scroll').addEventListener('scroll',()=>{$('rank-scroll').scrollLeft=$('rank-bottom-scroll').scrollLeft;});
+ window.addEventListener('resize',syncRankWidth);
+ $('rank-export').onclick=()=>{const {pair}=rankSelection();const lines=[['setup','band','confirmation','hold','pair','n','top3_pf','rank456_pf','top3_wr','rank456_wr','top3_avg_net','rank456_avg_net','rank456_minus_top3','rank456_beats_top3_rate','top3_worst','rank456_worst'],...rankFiltered.map(c=>{const p=c.rank_pairs[pair],a=c.methods[p.top].all,b=c.methods[p.mid].all;return [ma(c),band(c),entries[c.confirmation],c.hold,pair,p.n,a.pf,b.pf,a.wr,b.wr,a.avg,b.avg,p.avg_diff,p.mid_beats_top,a.worst,b.worst];})];downloadCsv('top3-vs-rank456-filtered.csv',lines);};
  $('universe').innerHTML=D.universe.map(u=>`<tr><td><a href="https://www.tradingview.com/symbols/${esc(u.tv.replace(':','-'))}/" target="_blank" rel="noopener">${u.symbol} ↗</a></td><td>${esc(u.name)}</td><td>${u.parent}</td><td>${esc(u.family)}</td><td>${u.eligible_sessions}/${u.total_sessions}<small>${pct(u.eligible_fraction,1)}</small></td></tr>`).join('');
  render();
+ renderRank();
 })();

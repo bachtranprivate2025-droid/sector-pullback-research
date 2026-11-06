@@ -1,9 +1,9 @@
 {
   "status": "PASS",
   "symbols": 32,
-  "configs": 2940,
+  "configs": 4410,
   "setup_hold_comparisons": 294,
-  "trade_checks": 32470,
+  "trade_checks": 48705,
   "checks": [
     "OHLC validity",
     "unique dates",
@@ -17,10 +17,12 @@
     "exact holding length",
     "no overlapping baskets per strategy",
     "confirmed sweep pivot",
-    "independent leader ranking",
+    "independent leader and rank456 ranking",
     "three consecutive daily excess checks",
     "source return reconciliation",
-    "paired sample counts"
+    "paired sample counts",
+    "top3 versus rank456: identical dates, costs, weights and disjoint holdings"
   ],
-  "note": "Trades across configurations overlap. Total checks are not independent observations."
+  "note": "Trades across configurations overlap. Total checks are not independent observations.",
+  "prior_method_results_unchanged": 2940
 }
