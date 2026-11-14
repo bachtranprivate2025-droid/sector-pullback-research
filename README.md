@@ -1,5 +1,7 @@
 # Sector Pullback Research
 
+**Mới (14/11/2026):** [Khi SPY pullback — 1999–2026, 11 sector + 22 sub-sector](spy-pullback/) · Yahoo adjusted, 8.064 cấu hình, có chế độ sáng/tối.
+
 Interactive historical research for SPY moving-average pullbacks and swing-low reversals, with equal-weight long-only US sector ETF baskets.
 
 - Default sample: 2016-11-04 to 2026-11-03, Yahoo adjusted OHLC.
