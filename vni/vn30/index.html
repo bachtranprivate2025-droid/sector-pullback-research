@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Backtest VN30: khi VN-Index pullback về MA thì mua mã nào, 08/2020–11/2026.">
+<title>Khi VNI Pullback</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: single reading column (~760px) with wide tables/charts in scroll boxes; ledger-like report for a trader */
+:root{--bg:#f6f7f5;--panel:#ffffff;--fg:#17201c;--muted:#5d6b64;--line:#dde3df;--accent:#0f7a5c;--accent-soft:#e3f2ec;--good:#13854f;--bad:#c2412d;--warn:#b07a12;--grey:#9aa5a0;--on-accent:#ffffff;
+--display:"Be Vietnam Pro",system-ui,sans-serif;--body:"Be Vietnam Pro",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101513;--panel:#171e1b;--fg:#e6ece9;--muted:#9aa8a1;--line:#27312d;--accent:#3ccf9b;--accent-soft:#16312a;--good:#4cc786;--bad:#f07a63;--warn:#e0b04a;--grey:#5e6a65;--on-accent:#0b1210;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#101513;--panel:#171e1b;--fg:#e6ece9;--muted:#9aa8a1;--line:#27312d;--accent:#3ccf9b;--accent-soft:#16312a;--good:#4cc786;--bad:#f07a63;--warn:#e0b04a;--grey:#5e6a65;--on-accent:#0b1210;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:15px/1.6 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 64px}
+main{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:36px}
+h1{font:700 clamp(26px,4vw,36px)/1.2 var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
+h2{font:600 21px/1.3 var(--display);margin:0 0 10px;text-wrap:balance}
+p{margin:0 0 10px;max-width:68ch}
+.eyebrow{font:600 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.sub{color:var(--muted)}
+.verdict{background:var(--accent-soft);border-left:4px solid var(--accent);padding:20px 22px;border-radius:8px;display:flex;flex-direction:column;gap:16px}
+.v-title{font:600 13px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.v-grid{display:flex;flex-direction:column;gap:12px}
+.v-item{display:grid;grid-template-columns:84px 1fr;gap:12px;align-items:baseline;line-height:1.55}
+.v-label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.v-compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;padding-top:14px;border-top:1px solid color-mix(in srgb,var(--accent) 25%,transparent)}
+.v-compare div{display:flex;flex-direction:column;gap:2px}
+.v-compare b{font:600 22px var(--mono);font-variant-numeric:tabular-nums;color:var(--accent)}
+.v-compare .weak b{color:var(--bad)}
+.v-compare span{font-size:13px;color:var(--muted)}
+.v-note{margin:0;font-size:13px;color:var(--muted)}
+@media (max-width:480px){.v-item{grid-template-columns:1fr;gap:2px}}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:16px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.kpi b{display:block;font:600 24px var(--mono);font-variant-numeric:tabular-nums}
+.kpi span{font-size:13px;color:var(--muted)}
+.box{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{padding:8px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:600;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+tr.hl td{background:var(--accent-soft);font-weight:600}
+.good{color:var(--good)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+.pill{display:inline-block;padding:1px 8px;border-radius:99px;font-size:12px;font-weight:600}
+.pill.g{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good)}
+.pill.b{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.pill.w{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
+ol.rules{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.chart{padding:12px}
+.chart svg{display:block;width:100%;height:auto}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted);padding:0 12px 10px}
+.legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:6px;border-radius:2px}
+.note{font-size:13px;color:var(--muted)}
+code{font:13px var(--mono)}
+.box+ul{margin-top:18px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.theme{display:inline-flex;border:1px solid var(--line);border-radius:99px;padding:3px;background:var(--panel)}
+.theme button{font:500 13px var(--body);color:var(--muted);background:transparent;border:0;border-radius:99px;padding:5px 12px;cursor:pointer}
+.theme button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.theme button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="topbar"><div class="eyebrow">VN-Index · VN30 · Backtest 08/2020 – 13/11/2026</div><div class="theme" role="group" aria-label="Chế độ hiển thị"><button id="th-light" data-t="light" aria-pressed="false">Sáng</button><button id="th-dark" data-t="dark" aria-pressed="false">Tối</button><button id="th-auto" data-t="auto" aria-pressed="false">Theo máy</button></div></div>
+<h1>Khi VNI pullback</h1>
+<p class="sub">Rổ VN30 theo đúng từng kỳ, dữ liệu Finlens, phí 0,10% khứ hồi. Báo cáo lịch sử, không phải tín hiệu giao dịch.</p>
+</header>
+
+<section>
+<div class="verdict">
+<div class="v-title">Kết luận</div>
+<div class="v-grid">
+<div class="v-item"><span class="v-label">Tín hiệu</span><span>VNI về vùng MA20 ngày rồi đóng cửa lấy lại MA20, MA20 đang dốc lên</span></div>
+<div class="v-item"><span class="v-label">Mua</span><span><b>3 mã VN30 có RS 4 khung mạnh nhất</b>, chia đều vốn</span></div>
+<div class="v-item"><span class="v-label">Giữ</span><span><b>20 phiên</b>, không cắt lỗ sớm theo MA20</span></div>
+</div>
+<div class="v-compare">
+<div><b>5,43</b><span>Top 3 RS</span></div>
+<div><b>3,37</b><span>Mua VN30</span></div>
+<div><b>2,71</b><span>Chọn ngẫu nhiên</span></div>
+<div class="weak"><b>1,88</b><span>Mã RS yếu</span></div>
+</div>
+<p class="v-note">Profit factor trên 27 lệnh. Kết quả nhạy với độ rộng vùng ATR, xem bảng theo từng MA.</p>
+</div>
+<div class="kpis">
+<div class="kpi"><b>5,43</b><span>Profit factor</span></div>
+<div class="kpi"><b>67%</b><span>Tỷ lệ lệnh thắng</span></div>
+<div class="kpi"><b>+5,07%</b><span>Lãi trung bình mỗi lệnh</span></div>
+<div class="kpi"><b>-18%</b><span>Sụt giảm lớn nhất (theo lệnh)</span></div>
+</div>
+</section>
+
+<section>
+<h2>Tổng kết: mua gì theo từng mức pullback</h2>
+<p>Pullback càng nông thì mã dẫn dắt càng có lợi thế. Chỉnh càng sâu thì VN30 và nhóm bị bán mạnh hồi tốt hơn.</p>
+<div class="box"><table>
+<tr><th>Mức pullback của VNI</th><th style="text-align:left">Nhận biết</th><th style="text-align:left">Nên mua</th><th>Giữ</th><th style="text-align:left">Bằng chứng</th><th>Đánh giá</th></tr>
+<tr class="hl"><td>Nông · MA20 Daily</td><td style="text-align:left">VNI cách đỉnh 60 phiên khoảng −3%, lấy lại MA20 trong vùng ±0,75 ATR, MA20 dốc lên</td><td style="text-align:left">Top 3 mã RS 4 khung</td><td>20 phiên</td><td style="text-align:left">PF 5,43 · 27 lệnh · bỏ 3 lệnh tốt còn 3,40</td><td><span class="pill g">Tín hiệu chính</span></td></tr>
+<tr><td>Nông · MA10 Weekly</td><td style="text-align:left">Lấy lại MA10 tuần trong vùng ±0,75 ATR</td><td style="text-align:left">Top 3 mã RS 4 khung</td><td>20 phiên</td><td style="text-align:left">PF 3,52 · 22 lệnh · bỏ 3 lệnh tốt còn 2,19</td><td><span class="pill g">Tín hiệu phụ</span></td></tr>
+<tr><td>Trung bình · MA50 Daily</td><td style="text-align:left">Lấy lại MA50 trong vùng ±0,75 ATR</td><td style="text-align:left">Top 3 RS, vốn nhỏ</td><td>20 phiên</td><td style="text-align:left">PF 2,66 · 21 lệnh · bỏ 3 lệnh tốt 1,64</td><td><span class="pill w">Dùng thận trọng</span></td></tr>
+<tr><td>Sâu · MA20 Weekly, MA100 Daily</td><td style="text-align:left">VNI cách đỉnh khoảng −6% trở lên</td><td style="text-align:left">VN30 / nhóm vốn hóa lớn</td><td>20 phiên</td><td style="text-align:left">MA20W: VN30 thắng 11/14 lệnh, lỗ lớn nhất −2%; top RS bỏ 3 lệnh tốt chỉ còn 0,52</td><td><span class="pill w">Ít mẫu</span></td></tr>
+<tr><td>Bán tháo</td><td style="text-align:left">VNI giảm từ 10% rồi có phiên tăng mạnh</td><td style="text-align:left">VN30 hoặc mã bị bán mạnh nhất</td><td>20–40 phiên</td><td style="text-align:left">01/2021: VN30 +16%, mã yếu +22%, top RS −3%</td><td><span class="pill w">Ít mẫu</span></td></tr>
+<tr><td>MA50 / MA100 Weekly</td><td style="text-align:left">Chỉ 3–10 lần trong 6 năm</td><td style="text-align:left">Chưa đủ dữ liệu</td><td>–</td><td style="text-align:left">PF rất cao nhưng không đáng tin</td><td><span class="pill b">Không dùng</span></td></tr>
+</table></div>
+<ul>
+<li><b>Cách đọc PF:</b> PF = tổng lãi ÷ tổng lỗ. Mẫu nhỏ mà ít lệnh lỗ thì PF bị thổi phồng (ví dụ VN30 ở MA20 Weekly ra 15,38 chỉ vì tổng lỗ −3,2%). Cần xem thêm số lệnh, tỷ lệ thắng và lỗ lớn nhất.</li>
+<li><b>Bỏ 3 lệnh tốt:</b> PF tính lại sau khi bỏ 3 lệnh lãi lớn nhất. Từ 2 trở lên là lợi thế ổn định; dưới 1 nghĩa là PF cao chỉ nhờ vài cú may.</li>
+<li><b>Giữ lệnh:</b> với cổ phiếu, giữ cố định khoảng 20 phiên tốt hơn cắt lỗ theo MA20. Phí 0,10% nên giữ 5 phiên vẫn có lãi ở MA20 Daily (PF 2,65), nhưng 20 phiên ổn định nhất.</li>
+<li><b>Kỳ vọng thực tế:</b> PF khoảng 2–3 thay vì 5. Kết quả MA20 Daily nhạy với độ rộng vùng ATR, và 4 lệnh gần nhất năm 2026 đều lỗ.</li>
+</ul>
+</section>
+
+<section>
+<h2>Tăng trưởng vốn qua 27 lệnh</h2>
+<p>Gộp lãi lỗ liên tiếp, mỗi lần dùng toàn bộ vốn, cùng ngày vào và ngày ra cho cả ba cách chọn.</p>
+<div class="box chart"><svg id="eq" viewBox="0 0 760 300" role="img" aria-label="Vốn tăng gấp 3,50 lần với top 3 RS so với 2,05 lần khi mua VN30"></svg>
+<div class="legend"><span><i style="background:var(--accent)"></i>Top 3 RS 4 khung</span><span><i style="background:var(--grey)"></i>Mua VN30</span><span><i style="background:var(--bad)"></i>3 mã RS yếu nhất</span></div></div>
+</section>
+
+<section>
+<h2>So sánh cách chọn mã</h2>
+<p>Cùng 27 tín hiệu (VNI lấy lại MA20, vùng ±0,75 ATR, MA20 dốc lên), giữ 20 phiên.</p>
+<div class="box"><table>
+<tr><th>Cách chọn</th><th>PF</th><th>Win</th><th>Lãi TB</th><th>Sụt giảm</th><th>2020–22</th><th>2023–24</th><th>2025–26</th><th>Bỏ 3 lệnh tốt</th></tr>
+<tr class="hl"><td>Top 3 mã RS 4 khung</td><td class=''>5,43</td><td>67%</td><td class='good'>+5,07%</td><td>-18,4%</td><td>9,61</td><td class=''>8,30</td><td>3,25</td><td class=''>3,40</td></tr><tr><td>3 ngành L4K → mã mạnh nhất</td><td class=''>3,72</td><td>67%</td><td class='good'>+3,64%</td><td>-16,5%</td><td>4,29</td><td class=''>4,44</td><td>3,07</td><td class=''>2,29</td></tr><tr><td>Mua VN30</td><td class=''>3,37</td><td>67%</td><td class='good'>+2,85%</td><td>-12,7%</td><td>10,64</td><td class=''>2,45</td><td>1,75</td><td class=''>2,17</td></tr><tr><td>3 mã ngẫu nhiên (trung vị 30 lần)</td><td>2,71</td><td>63%</td><td class='good'>+2,72%</td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr><tr><td>3 mã RS yếu nhất</td><td class=''>1,88</td><td>59%</td><td class='good'>+2,28%</td><td>-34,5%</td><td>4,24</td><td class='bad'>0,73</td><td>1,44</td><td class=''>1,07</td></tr>
+</table></div>
+<p class="note">RS 4 khung: xếp hạng 30 mã theo performance 1 tuần, 1 tháng, 3 tháng, 6 tháng rồi cộng 4 thứ hạng; ưu tiên mã đang trên MA50.</p>
+</section>
+<section>
+<h2>Giữ bao lâu</h2>
+<p>Với phí 0,10%, giữ 5 phiên đã có lãi (PF 2,65), nhưng giữ 20 phiên vẫn là điểm cân bằng tốt nhất giữa số lệnh và độ ổn định.</p>
+<div class="box"><table>
+<tr><th>Kỳ giữ</th><th>Số lệnh</th><th>PF top 3 RS</th><th>Lãi TB</th><th>Bỏ 3 lệnh tốt</th><th>PF mua VN30</th></tr><tr><td>5 phiên</td><td>35</td><td class=''>2,65</td><td>+1,93%</td><td>1,80</td><td>1,02</td></tr><tr><td>10 phiên</td><td>34</td><td class=''>2,03</td><td>+1,79%</td><td>1,34</td><td>1,71</td></tr><tr><td>15 phiên</td><td>31</td><td class=''>2,86</td><td>+3,11%</td><td>1,69</td><td>2,10</td></tr><tr class="hl"><td>20 phiên</td><td>27</td><td class=''>5,43</td><td>+5,07%</td><td>3,40</td><td>3,37</td></tr><tr><td>30 phiên</td><td>24</td><td class=''>3,82</td><td>+5,03%</td><td>2,17</td><td>2,82</td></tr><tr><td>40 phiên</td><td>20</td><td class=''>6,23</td><td>+7,72%</td><td>3,47</td><td>3,01</td></tr><tr><td>60 phiên</td><td>15</td><td class='warn'>14,63</td><td>+12,56%</td><td>5,98</td><td>2,82</td></tr>
+</table></div>
+<p class="note">Kỳ 60 phiên chỉ có 15 lệnh nên PF cao không đáng tin.</p>
+</section>
+<section>
+<h2>Điểm vào và cách thoát</h2>
+<div class="box"><table>
+<tr><th>Tín hiệu · Thoát</th><th>Lệnh</th><th>PF top 3 RS</th><th>Bỏ 3 lệnh tốt</th><th>Đánh giá</th></tr>
+<tr class="hl"><td>Lấy lại MA20 · giữ 20 phiên</td><td>27</td><td>5,43</td><td>3,40</td><td><span class="pill g">Nên dùng</span></td></tr>
+<tr><td>Lấy lại MA20 · thủng MA20 hoặc −5%</td><td>23</td><td>4,29</td><td>2,00</td><td><span class="pill w">Yếu ở 2025–26 (1,36)</span></td></tr>
+<tr><td>Chạm MA20 · giữ 20 phiên</td><td>35</td><td>2,47</td><td>1,59</td><td><span class="pill w">Trung bình</span></td></tr>
+<tr><td>Chạm MA20 · thủng MA20 hoặc −5%</td><td>32</td><td>1,73</td><td class="bad">0,59</td><td><span class="pill b">Không dùng</span></td></tr>
+</table></div>
+<p>Cổ phiếu dao động mạnh hơn chỉ số ngành nên hay thủng MA20 tạm thời rồi mới chạy. Cắt theo MA20 làm mất phần lớn các lệnh thắng lớn.</p>
+</section>
+<section>
+<h2>Bảng pullback theo từng MA</h2>
+<p>Cùng cách chọn mã và giữ 20 phiên, đổi đường MA của VNI. Chỉ MA20 Daily ±0,75 ATR (5,43) và MA10 Weekly ±0,75 ATR (3,52) vượt PF 3 với từ 20 lệnh trở lên.</p>
+<p class="note">Bấm vào tiêu đề cột để sắp xếp, bấm lần nữa để đảo chiều.</p>
+<div class="box"><table id="magrid" class="sortable">
+<tr><th>MA của VNI</th><th style="text-align:left">Điểm vào</th><th>Lệnh</th><th>PF top 3 RS</th><th>Bỏ 3 lệnh tốt</th><th>PF VN30</th><th>PF RS yếu</th><th>PF ngẫu nhiên</th><th>Cách tốt nhất</th><th>Đánh giá</th></tr>
+<tr><td>MA10 Daily</td><td style="text-align:left">Lấy lại MA ±0,75 ATR</td><td>37</td><td class="">1,83</td><td>1,23</td><td>1,55</td><td>1,10</td><td>1,37</td><td>Top 3 RS</td><td><span class="pill b">Không đạt</span></td></tr><tr><td>MA10 Daily</td><td style="text-align:left">Lấy lại MA</td><td>38</td><td class="good">2,08</td><td>1,28</td><td>1,30</td><td>0,78</td><td>1,38</td><td>Top 3 RS</td><td><span class="pill b">Không đạt</span></td></tr><tr><td>MA10 Daily</td><td style="text-align:left">Chạm MA</td><td>44</td><td class="">1,33</td><td>0,83</td><td>1,20</td><td>0,77</td><td>1,03</td><td>Top 3 RS</td><td><span class="pill b">Không đạt</span></td></tr><tr class="hl"><td>MA20 Daily</td><td style="text-align:left">Lấy lại MA ±0,75 ATR</td><td>27</td><td class="good">5,43</td><td>3,40</td><td>3,37</td><td>1,88</td><td>2,76</td><td>Top 3 RS</td><td><span class="pill g">Đạt</span></td></tr><tr><td>MA20 Daily</td><td style="text-align:left">Lấy lại MA</td><td>26</td><td class="">1,32</td><td>0,75</td><td>1,28</td><td>1,23</td><td>0,91</td><td>Top 3 RS</td><td><span class="pill b">Không đạt</span></td></tr><tr><td>MA20 Daily</td><td style="text-align:left">Chạm MA</td><td>32</td><td class="">1,51</td><td>0,93</td><td>1,51</td><td>1,36</td><td>1,20</td><td>Top 3 RS</td><td><span class="pill b">Không đạt</span></td></tr><tr><td>MA50 Daily</td><td style="text-align:left">Lấy lại MA ±0,75 ATR</td><td>21</td><td class="good">2,66</td><td>1,64</td><td>1,51</td><td>1,18</td><td>1,60</td><td>Top 3 RS</td><td><span class="pill g">Đạt</span></td></tr><tr><td>MA50 Daily</td><td style="text-align:left">Lấy lại MA</td><td>14</td><td class="">1,72</td><td>0,49</td><td>0,74</td><td>1,44</td><td>1,09</td><td>Top 3 RS</td><td><span class="pill w">Ít mẫu</span></td></tr><tr><td>MA50 Daily</td><td style="text-align:left">Chạm MA</td><td>20</td><td class="">1,76</td><td>0,72</td><td>1,31</td><td>2,17</td><td>1,48</td><td>RS yếu</td><td><span class="pill b">Không đạt</span></td></tr><tr><td>MA100 Daily</td><td style="text-align:left">Lấy lại MA ±0,75 ATR</td><td>16</td><td class="">1,83</td><td>0,66</td><td>4,88</td><td>2,50</td><td>3,12</td><td>VN30</td><td><span class="pill w">Ít mẫu</span></td></tr><tr><td>MA100 Daily</td><td style="text-align:left">Lấy lại MA</td><td>14</td><td class="good">2,13</td><td>0,45</td><td>13,23</td><td>6,12</td><td>6,49</td><td>VN30</td><td><span class="pill w">Ít mẫu</span></td></tr><tr><td>MA100 Daily</td><td style="text-align:left">Chạm MA</td><td>21</td><td class="">1,26</td><td>0,40</td><td>2,82</td><td>3,02</td><td>2,48</td><td>RS yếu</td><td><span class="pill b">Không đạt</span></td></tr><tr><td>MA10 Weekly</td><td style="text-align:left">Lấy lại MA ±0,75 ATR</td><td>22</td><td class="good">3,52</td><td>2,19</td><td>1,54</td><td>0,98</td><td>1,56</td><td>Top 3 RS</td><td><span class="pill g">Đạt</span></td></tr><tr><td>MA10 Weekly</td><td style="text-align:left">Lấy lại MA</td><td>13</td><td class="good">2,29</td><td>0,88</td><td>0,76</td><td>0,51</td><td>0,96</td><td>Top 3 RS</td><td><span class="pill w">Ít mẫu</span></td></tr><tr><td>MA10 Weekly</td><td style="text-align:left">Chạm MA</td><td>18</td><td class="good">2,28</td><td>0,95</td><td>1,58</td><td>2,54</td><td>1,58</td><td>RS yếu</td><td><span class="pill w">Ít mẫu</span></td></tr><tr><td>MA20 Weekly</td><td style="text-align:left">Lấy lại MA ±0,75 ATR</td><td>14</td><td class="">1,98</td><td>0,58</td><td>3,48</td><td>4,34</td><td>3,03</td><td>RS yếu</td><td><span class="pill w">Ít mẫu</span></td></tr><tr><td>MA20 Weekly</td><td style="text-align:left">Lấy lại MA</td><td>14</td><td class="good">2,12</td><td>0,52</td><td>15,38</td><td>12,85</td><td>4,96</td><td>VN30</td><td><span class="pill w">Ít mẫu</span></td></tr><tr><td>MA20 Weekly</td><td style="text-align:left">Chạm MA</td><td>21</td><td class="">1,40</td><td>0,45</td><td>2,94</td><td>3,30</td><td>2,75</td><td>RS yếu</td><td><span class="pill b">Không đạt</span></td></tr><tr><td>MA50 Weekly</td><td style="text-align:left">Lấy lại MA ±0,75 ATR</td><td>10</td><td class="bad">0,91</td><td>0,20</td><td>1,26</td><td>1,32</td><td>1,08</td><td>RS yếu</td><td><span class="pill w">Ít mẫu</span></td></tr><tr><td>MA50 Weekly</td><td style="text-align:left">Lấy lại MA</td><td>6</td><td class="good">2,33</td><td>0,37</td><td>2,83</td><td>2,65</td><td>1,85</td><td>VN30</td><td><span class="pill w">Ít mẫu</span></td></tr><tr><td>MA50 Weekly</td><td style="text-align:left">Chạm MA</td><td>9</td><td class="">1,97</td><td>0,26</td><td>1,59</td><td>2,90</td><td>2,04</td><td>RS yếu</td><td><span class="pill w">Ít mẫu</span></td></tr><tr><td>MA100 Weekly</td><td style="text-align:left">Lấy lại MA ±0,75 ATR</td><td>3</td><td class="good">9,06</td><td>–</td><td>9,33</td><td>–</td><td>5,21</td><td>VN30</td><td><span class="pill w">Ít mẫu</span></td></tr><tr><td>MA100 Weekly</td><td style="text-align:left">Lấy lại MA</td><td>3</td><td class="good">41,91</td><td>–</td><td>6,37</td><td>–</td><td>3,08</td><td>Top 3 RS</td><td><span class="pill w">Ít mẫu</span></td></tr><tr><td>MA100 Weekly</td><td style="text-align:left">Chạm MA</td><td>4</td><td class="good">2,81</td><td>0,00</td><td>7,04</td><td>8,93</td><td>4,63</td><td>RS yếu</td><td><span class="pill w">Ít mẫu</span></td></tr>
+</table></div>
+<ul>
+<li><b>MA ngắn (MA10, MA20, MA50 Daily, MA10 Weekly):</b> top 3 RS thắng VN30, mã yếu và ngẫu nhiên.</li>
+<li><b>MA sâu (MA100 Daily, MA20 Weekly):</b> VN30 hoặc mã yếu tốt hơn top 3 RS; chỉnh sâu thì nhóm bị bán mạnh hồi nhanh hơn.</li>
+<li><span class="bad"><b>Cảnh báo:</b></span> MA20 Daily cùng kiểu lấy lại nhưng không có vùng ATR chỉ đạt PF 1,32, chạm MA đạt 1,51. Kết quả cao phụ thuộc vào độ rộng vùng ±0,75 ATR, nên cần coi là ước lượng lạc quan.</li>
+<li>MA50 Weekly và MA100 Weekly chỉ có 3–10 lệnh trong 6 năm, không đủ để kết luận.</li>
+</ul>
+<p class="note">Kỳ giữ 5, 10, 40 phiên và các cột theo giai đoạn có trong file CSV kèm theo.</p>
+</section>
+<section>
+<h2>Độ bền</h2>
+<ul>
+<li>Phí 0,40% khứ hồi (cao gấp 4): PF vẫn <b>4,83</b>.</li>
+<li>Mua top 5 thay vì top 3: PF <b>4,71</b>, sụt giảm nhỏ hơn (-17,9%).</li>
+<li>Cả ba giai đoạn đều trên 3, nhưng 2025–2026 thấp nhất (3,25) và <span class="bad">4 lệnh gần nhất năm 2026 đều lỗ</span>.</li>
+</ul>
+</section>
+<section>
+<h2>27 lệnh của cấu hình tốt nhất</h2>
+<div class="box"><table id="tr"><tr><th>Ngày tín hiệu</th><th>3 mã mua</th><th>Ngày bán</th><th>Lãi sau phí</th></tr></table></div>
+</section>
+
+<section>
+<h2>Rổ VN30 theo thời gian</h2>
+<p>Mỗi ngày tín hiệu chỉ chọn trong 30 mã đang thuộc VN30 lúc đó. 46 mã từng có mặt trong giai đoạn này.</p>
+<div class="box"><table>
+<tr><th>Hiệu lực</th><th>Thêm vào</th><th>Loại ra</th></tr>
+<tr><td>03/08/2020</td><td>KDH, TCH</td><td>CTD, BVH</td></tr>
+<tr><td>01/02/2021</td><td>BVH, PDR, TPB</td><td>SAB, EIB, ROS</td></tr>
+<tr><td>02/08/2021</td><td>ACB, GVR, SAB</td><td>REE, SBT, TCH</td></tr>
+<tr><td>01/08/2022</td><td>VIB</td><td>PNJ</td></tr>
+<tr><td>06/02/2023</td><td>BCM</td><td>KDH</td></tr>
+<tr><td>07/08/2023</td><td>SHB, SSB</td><td>NVL, PDR</td></tr>
+<tr><td>03/02/2025</td><td>LPB</td><td>POW</td></tr>
+<tr><td>04/08/2025</td><td>DGC</td><td>BVH</td></tr>
+<tr><td>02/02/2026</td><td>VPL</td><td>BCM</td></tr>
+<tr><td>13/05/2026</td><td>BSR</td><td>DGC</td></tr>
+<tr><td>03/08/2026</td><td>MCH, TCX</td><td>PLX, TPB</td></tr>
+</table></div>
+<p class="note">Các kỳ 02/2022, 02/2024, 08/2024 không thay đổi.</p>
+</section>
+
+<section>
+<h2>Quy tắc giao dịch</h2>
+<ol class="rules">
+<li><b>Bối cảnh:</b> MA20 ngày của VNI đang dốc lên (cao hơn 10 phiên trước).</li>
+<li><b>Tín hiệu:</b> VNI đi vào vùng MA20 ± 0,75 ATR, rồi đóng cửa lấy lại MA20 trong ngày đó hoặc tối đa 5 phiên sau.</li>
+<li><b>Chọn mã:</b> 3 mã VN30 có tổng thứ hạng RS 1 tuần + 1 tháng + 3 tháng + 6 tháng cao nhất, chia đều vốn.</li>
+<li><b>Vào lệnh:</b> giá mở cửa phiên sau tín hiệu (có thể canh nến H4).</li>
+<li><b>Thoát:</b> bán sau khoảng 20 phiên. Chỉ đặt stop xa cho trường hợp thị trường sập, không cắt theo MA20.</li>
+</ol>
+</section>
+
+<section>
+<h2>Trạng thái ngày 13/11/2026</h2>
+<p>VNI đóng cửa 1.734,9, sát MA20 (1.736,4) nhưng MA20 đang dốc xuống và VNI vẫn dưới MA200 (1.787,3). <span class="bad">Chưa có tín hiệu.</span> Nếu tín hiệu xuất hiện, danh sách RS 4 khung hiện tại:</p>
+<div class="box"><table id="rk"><tr><th>Mã</th><th>1 tuần</th><th>1 tháng</th><th>3 tháng</th><th>6 tháng</th><th>Trên MA50</th></tr></table></div>
+<p class="note">Thứ hạng thay đổi hằng ngày; cần tính lại tại ngày có tín hiệu.</p>
+</section>
+
+<section>
+<h2>Hạn chế</h2>
+<ul>
+<li>Chỉ 27 lệnh trong khoảng 6 năm: mẫu nhỏ, PF có thể dao động mạnh khi có thêm dữ liệu.</li>
+<li>Không tìm được kết quả kỳ review 01/2020 nên bắt đầu từ 08/2020; có thể sót vài lần thay giữa kỳ.</li>
+<li>Phí 0,10% khứ hồi; giá dùng là giá điều chỉnh của Finlens; chưa tính trượt giá ở phiên mở cửa và giới hạn thanh khoản.</li>
+<li>Tín hiệu và cách chọn được rút ra từ các nghiên cứu trước trên cùng giai đoạn, nên kết quả có thể cao hơn khi giao dịch thật.</li>
+</ul>
+</section>
+</main>
+<script>
+(()=>{const root=document.documentElement;const set=t=>{if(t==='auto')root.removeAttribute('data-theme');else root.setAttribute('data-theme',t);document.querySelectorAll('.theme button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.t===t)));try{localStorage.setItem('vni-theme',t)}catch(e){}};let t='auto';try{t=localStorage.getItem('vni-theme')||'auto'}catch(e){}set(t);document.querySelectorAll('.theme button').forEach(b=>b.addEventListener('click',()=>set(b.dataset.t)));})();
+const D={"trades": [{"d": "2020-09-29", "p": "STB MWG HPG", "r": 8.54, "x": "2020-10-27"}, {"d": "2020-11-03", "p": "PNJ STB MBB", "r": 11.48, "x": "2020-12-01"}, {"d": "2020-12-24", "p": "SSI HPG VPB", "r": 15.7, "x": "2021-01-22"}, {"d": "2021-03-05", "p": "VPB TCB SSI", "r": 4.94, "x": "2021-04-02"}, {"d": "2021-04-22", "p": "PDR NVL HPG", "r": 18.35, "x": "2021-05-24"}, {"d": "2021-06-09", "p": "PDR VPB NVL", "r": 9.47, "x": "2021-07-07"}, {"d": "2021-10-26", "p": "GVR GAS KDH", "r": -5.65, "x": "2021-11-23"}, {"d": "2022-01-11", "p": "POW BID STB", "r": 5.7, "x": "2022-02-15"}, {"d": "2022-08-23", "p": "SAB GAS VNM", "r": -2.12, "x": "2022-09-22"}, {"d": "2022-12-13", "p": "STB CTG SSI", "r": 0.49, "x": "2023-01-11"}, {"d": "2023-02-02", "p": "STB HPG VCB", "r": -1.3, "x": "2023-03-02"}, {"d": "2023-04-07", "p": "SSI TPB VPB", "r": -1.98, "x": "2023-05-10"}, {"d": "2023-06-30", "p": "HPG SSI GVR", "r": 11.48, "x": "2023-07-28"}, {"d": "2024-02-01", "p": "GVR HDB CTG", "r": 12.18, "x": "2024-03-07"}, {"d": "2024-03-11", "p": "GVR MSN FPT", "r": 0.7, "x": "2024-04-08"}, {"d": "2024-05-24", "p": "MWG GVR PLX", "r": 3.02, "x": "2024-06-21"}, {"d": "2024-09-06", "p": "VHM FPT HDB", "r": -0.28, "x": "2024-10-04"}, {"d": "2024-12-19", "p": "BVH STB FPT", "r": 2.12, "x": "2025-01-17"}, {"d": "2025-03-19", "p": "VIC SHB VHM", "r": 19.88, "x": "2025-04-17"}, {"d": "2025-06-06", "p": "SHB STB VIC", "r": 1.73, "x": "2025-07-04"}, {"d": "2025-07-31", "p": "VPB SHB SSI", "r": 24.44, "x": "2025-08-28"}, {"d": "2025-09-11", "p": "VIC VHM VJC", "r": 11.19, "x": "2025-10-09"}, {"d": "2025-12-11", "p": "VIC SAB HDB", "r": 6.57, "x": "2026-01-12"}, {"d": "2026-01-26", "p": "GAS PLX BID", "r": -0.85, "x": "2026-03-02"}, {"d": "2026-05-13", "p": "BSR VIC VHM", "r": -7.58, "x": "2026-06-10"}, {"d": "2026-07-06", "p": "VHM VIC SSB", "r": -3.97, "x": "2026-08-03"}, {"d": "2026-09-11", "p": "SSB STB MCH", "r": -7.22, "x": "2026-10-09"}], "eqL": [1.0854, 1.2099, 1.3999, 1.4691, 1.7387, 1.9034, 1.7958, 1.8981, 1.8578, 1.8669, 1.8426, 1.8062, 2.0136, 2.2589, 2.2748, 2.3435, 2.3369, 2.3864, 2.8607, 2.9101, 3.6213, 4.0265, 4.2909, 4.2544, 3.9319, 3.776, 3.5035], "eqV": [1.0684, 1.1552, 1.2912, 1.3589, 1.5274, 1.6114, 1.6593, 1.6895, 1.6015, 1.6127, 1.5147, 1.4745, 1.5847, 1.7215, 1.749, 1.792, 1.8259, 1.8208, 1.7146, 1.7991, 2.0667, 2.1568, 2.3244, 2.2955, 2.2038, 2.1202, 2.0493], "eqB": [1.2304, 1.3415, 1.5875, 1.6062, 1.7265, 1.77, 1.9355, 2.0208, 1.8578, 1.6777, 1.4003, 1.3294, 1.3791, 1.5773, 1.5719, 1.5139, 1.5386, 1.5184, 1.324, 1.3916, 1.4956, 1.4222, 1.6435, 1.6445, 1.7809, 1.6891, 1.6478], "vni_last": 1734.93, "m20": 1736.3990000000001, "last": "2026-11-13", "rank": [{"s": "VIC", "score": 116.0, "up": true, "w": 3.6, "m": 11.5, "q": 16.9, "h": 8.0}, {"s": "VJC", "score": 111.0, "up": true, "w": 3.5, "m": 9.5, "q": 11.6, "h": 5.9}, {"s": "VPL", "score": 109.0, "up": true, "w": 1.2, "m": 22.1, "q": 22.1, "h": 4.0}, {"s": "STB", "score": 95.0, "up": true, "w": 1.7, "m": 13.4, "q": -2.6, "h": -1.2}, {"s": "HDB", "score": 90.0, "up": true, "w": 0.4, "m": -0.9, "q": 10.0, "h": 7.0}, {"s": "VIB", "score": 84.0, "up": true, "w": 0.4, "m": 1.8, "q": 5.7, "h": -4.4}, {"s": "TCB", "score": 83.0, "up": true, "w": 0.9, "m": -0.4, "q": 3.4, "h": -1.6}, {"s": "SSB", "score": 80.0, "up": false, "w": 1.7, "m": -5.3, "q": -1.0, "h": 9.6}], "m20up": false, "m200": 1787.2530000000002};
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function drawEq(){const s=document.getElementById('eq');const W=760,H=300,l=48,r=150,t=20,b=34;
+const ser=[['eqL','--accent','Top 3 RS'],['eqV','--grey','VN30'],['eqB','--bad','RS yếu']];
+const all=ser.flatMap(x=>D[x[0]]).concat([1]);const mn=Math.min(...all)*0.95,mx=Math.max(...all)*1.05;
+const n=D.eqL.length;const X=i=>l+i/(n)*(W-l-r);const Y=v=>t+(1-(v-mn)/(mx-mn))*(H-t-b);
+let g='';[1,1.5,2,2.5,3,3.5].filter(v=>v>=mn&&v<=mx).forEach(v=>{g+=`<line x1="${l}" x2="${W-r}" y1="${Y(v)}" y2="${Y(v)}" stroke="${css('--line')}"/><text x="${l-8}" y="${Y(v)+4}" text-anchor="end" font-size="12" fill="${css('--muted')}">${v.toLocaleString('vi-VN')}x</text>`});
+D.trades.forEach((tr,i)=>{if(i%5===0)g+=`<text x="${X(i+1)}" y="${H-12}" text-anchor="middle" font-size="11" fill="${css('--muted')}">${tr.d.slice(5,7)}/${tr.d.slice(2,4)}</text>`});
+ser.forEach(([k,c,lab])=>{const pts=[[X(0),Y(1)]].concat(D[k].map((v,i)=>[X(i+1),Y(v)]));g+=`<polyline fill="none" stroke="${css(c)}" stroke-width="${k==='eqL'?2.6:2}" points="${pts.map(p=>p.join(',')).join(' ')}"/>`;
+const v=D[k].at(-1);g+=`<text x="${W-r+8}" y="${Y(v)+4}" font-size="13" font-weight="600" fill="${css(c)}">${lab}: ${v.toLocaleString('vi-VN',{maximumFractionDigits:2})}x</text>`});
+s.innerHTML=g;}
+drawEq();matchMedia('(prefers-color-scheme: dark)').addEventListener('change',drawEq);
+new MutationObserver(drawEq).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+const T=document.getElementById('tr');D.trades.slice().reverse().forEach(x=>{const f=d=>d.slice(8,10)+'/'+d.slice(5,7)+'/'+d.slice(0,4);T.insertAdjacentHTML('beforeend',`<tr><td>${f(x.d)}</td><td style="text-align:left;font-family:var(--mono)">${x.p}</td><td>${f(x.x)}</td><td class="${x.r>0?'good':'bad'}">${x.r>0?'+':''}${x.r.toLocaleString('vi-VN')}%</td></tr>`)});
+(()=>{const tb=document.getElementById('magrid');if(!tb)return;const head=tb.rows[0];const num=t=>{t=t.replace('%','').replace(/\./g,'').replace(',','.').replace('−','-').trim();const v=parseFloat(t);return isNaN(v)?null:v;};
+const maOrder=t=>{const m=t.match(/MA(\d+) (Daily|Weekly)/);return m?(m[2]==='Weekly'?1000:0)+Number(m[1]):t;};
+[...head.cells].forEach((th,ci)=>{th.style.cursor='pointer';th.title='Sắp xếp';th.tabIndex=0;let dir=-1;const go=()=>{dir=-dir;const rows=[...tb.rows].slice(1);rows.sort((a,b)=>{let x=a.cells[ci].textContent,y=b.cells[ci].textContent;let vx=ci===0?maOrder(x):num(x),vy=ci===0?maOrder(y):num(y);if(vx===null&&vy===null)return 0;if(vx===null)return 1;if(vy===null)return -1;if(typeof vx==='string'||typeof vy==='string')return String(vx).localeCompare(String(vy),'vi')*dir;return (vx-vy)*dir;});const body=head.parentNode;rows.forEach(r=>body.appendChild(r));[...head.cells].forEach(c=>c.textContent=c.textContent.replace(/ [▲▼]$/,''));th.textContent+=dir>0?' ▲':' ▼';};th.addEventListener('click',go);th.addEventListener('keydown',e=>{if(e.key==='Enter')go();});});})();
+const R=document.getElementById('rk');const fm=v=>`<span class="${v>=0?'good':'bad'}">${v>0?'+':''}${v.toLocaleString('vi-VN')}%</span>`;
+D.rank.forEach(x=>R.insertAdjacentHTML('beforeend',`<tr><td style="font-family:var(--mono);font-weight:600">${x.s}</td><td>${fm(x.w)}</td><td>${fm(x.m)}</td><td>${fm(x.q)}</td><td>${fm(x.h)}</td><td>${x.up?'Có':'Không'}</td></tr>`));
+</script>
+</body>
+</html>
