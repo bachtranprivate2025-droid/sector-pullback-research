@@ -59,6 +59,14 @@ ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
 .tabs button[aria-pressed="true"]{background:var(--accent);color:var(--panel)}
 th.sortable{cursor:pointer}
 .mono{font-family:var(--mono)}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.topbar a{color:var(--accent);font-size:13px;font-weight:600;text-decoration:none}
+.theme-btn{display:inline-flex;align-items:center;gap:6px;font:600 13px var(--body);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:6px 12px;cursor:pointer}
+.theme-btn:hover{border-color:var(--accent)}
+.theme-btn .ico{font-size:15px;line-height:1}
+.dl{display:flex;flex-wrap:wrap;gap:10px}
+.dl a{display:inline-block;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--fg);text-decoration:none;font-size:14px}
+.dl a:hover{border-color:var(--accent);color:var(--accent)}
 </style><script>try{var t=localStorage.getItem('spy-pullback-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t;}catch(e){}</script>
 </head>
 <body>
